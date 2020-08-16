@@ -6,6 +6,9 @@ export const makeAuthURL = () => {
   return `https://accounts.spotify.com/authorize?client_id=${Secret.CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI}`
 }
 
+export const isCodeTokenInURL = () => window.location.search ? true : false
+
+
 export const requestAuthorization = () => {
   fetch(makeAuthURL(), {
     mode: 'no-cors',

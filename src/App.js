@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 
+import * as API from "./API/api";
+
 import { Login } from "./components/logIn";
 import { IsLoggedIn } from "./components/isLoggedIn";
 import { LogoComponent } from "./components/logo";
 
 function App() {
   let [isLogedIn, logIn] = useState(false)
-  // useEffect(() => {
+  useEffect(() => {
+    if (API.isCodeTokenInURL()) {
+      logIn(true)
+    }
 
-  // })
+  }, [])
   if (isLogedIn) {
     return (
       <React.Fragment>
