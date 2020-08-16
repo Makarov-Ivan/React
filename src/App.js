@@ -7,10 +7,9 @@ import { LogoComponent } from "./components/logo";
 
 function App() {
   let [isLogedIn, logIn] = useState(false)
-  useEffect(() => {
-    console.log(isLogedIn);
+  // useEffect(() => {
 
-  })
+  // })
   if (isLogedIn) {
     return (
       <React.Fragment>
