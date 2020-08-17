@@ -14,8 +14,15 @@ function App() {
     if (API.isCodeTokenInURL()) {
       logIn(true)
       setCodeToken(API.defineCodeToken())
-      console.log(codeToken);
+      // console.log(codeToken);
       // console.log('code ', API.defineCodeToken())
+      // console.log(codeToken);
+      if (codeToken) {
+        console.log(
+
+          API.requestAccessAndRefreshTokens(codeToken)
+        );
+      }
     }
 
   }, [codeToken, isLogedIn])
