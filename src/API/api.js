@@ -35,3 +35,24 @@ export const requestAccessAndRefreshTokens = async (token) => {
     return `ERROR ${response}`
   }
 }
+
+export const refreshAccessAndRefreshTokens = async (token) => {
+  let response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      "Authorization": `Basic ${btoa(idAndSeret)}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: stringify(
+      {
+        grant_type: "refresh_token",
+        refresh_token: token,
+      }
+    ),
+  })
+  if (response.ok) {
+    return await response.json()
+  } else {
+    return `ERROR ${response}`
+  }
+}

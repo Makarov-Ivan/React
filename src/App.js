@@ -29,6 +29,26 @@ function App() {
       })
   }, [isLogedIn, codeToken])
 
+  useEffect(() => {
+    if (expiresIn) {
+
+      setInterval(() => {
+        API.refreshAccessAndRefreshTokens(refreshToken).then((response) => {
+          setAccessToken(response.access_token);
+          alert('token updated');
+        })
+      }, Number(expiresIn) * 1000);
+    }
+  }, [expiresIn, refreshToken])
+
+  // setInterval(() => {
+  //   API.refreshAccessAndRefreshTokens.then(
+  //     (response) => {
+  //       setAccessToken(response.access_token);
+  //     }
+  //   )
+  // }, expiresIn);
+
   if (isLogedIn) {
     return (
       <React.Fragment>
