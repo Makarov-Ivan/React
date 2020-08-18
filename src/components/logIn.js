@@ -9,7 +9,7 @@ export const Login = () => {
       <a href={API.makeAuthURL()}
         className="App-link"
         rel="noopener noreferrer"
-        target="_blank"
+        target="_self"
       >
 
         spot
