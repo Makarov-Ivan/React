@@ -14,9 +14,8 @@ export const defineCodeToken = () => splitSearch()[1];
 
 const idAndSeret = `${Secret.CLIENT_ID}:${Secret.CLIENT_SECRET}`
 
-export const requestAccessAndRefreshTokens = (token) => {
-  console.log('fetch ', token)
-  fetch('https://accounts.spotify.com/api/token', {
+export const requestAccessAndRefreshTokens = async (token) => {
+  let response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
       "Authorization": `Basic ${btoa(idAndSeret)}`,
@@ -29,13 +28,10 @@ export const requestAccessAndRefreshTokens = (token) => {
         redirect_uri: REDIRECT_URI
       }
     ),
-
   })
-    .then(res => res.json())
-    .then(resp => console.log(resp))
-    .catch(err => console.error(err))
-
-
-
-
+  if (response.ok) {
+    return await response.json()
+  } else {
+    return `ERROR ${response}`
+  }
 }

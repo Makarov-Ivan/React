@@ -10,27 +10,32 @@ import { LogoComponent } from "./components/logo";
 function App() {
   let [isLogedIn, logIn] = useState(false)
   let [codeToken, setCodeToken] = useState('')
+  let [accessToken, setAccessToken] = useState()
+  let [refreshToken, setRefreshToken] = useState()
+  let [expiresIn, setExpiresIn] = useState()
+
   useEffect(() => {
-    if (API.isCodeTokenInURL()) {
-      logIn(true)
-      setCodeToken(API.defineCodeToken())
-      // console.log(codeToken);
-      // console.log('code ', API.defineCodeToken())
-      // console.log(codeToken);
-      if (codeToken) {
-        console.log(
+    API.isCodeTokenInURL() ? logIn(true) : logIn(false)
+    setCodeToken(API.defineCodeToken)
+  }, [])
 
-          API.requestAccessAndRefreshTokens(codeToken)
-        );
-      }
-    }
+  useEffect(() => {
+    API.requestAccessAndRefreshTokens(codeToken)
+      .then(response => {
+        console.log(response);
+        setAccessToken(response.access_token);
+        setRefreshToken(response.refresh_token);
+        setExpiresIn(response.expires_in)
+      })
+  }, [isLogedIn, codeToken])
 
-  }, [codeToken, isLogedIn])
   if (isLogedIn) {
     return (
       <React.Fragment>
         <LogoComponent />
         <IsLoggedIn />
+        <p>acess token</p>
+        {accessToken}
       </React.Fragment>
     )
   } else {
