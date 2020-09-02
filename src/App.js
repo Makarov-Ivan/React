@@ -6,6 +6,7 @@ import * as API from "./API/api";
 import { Login } from "./components/logIn";
 import { IsLoggedIn } from "./components/isLoggedIn";
 import { LogoComponent } from "./components/logo";
+import { useSelector } from 'react-redux';
 
 function App() {
   let [isLogedIn, logIn] = useState(false)
@@ -13,6 +14,9 @@ function App() {
   let [accessToken, setAccessToken] = useState()
   let [refreshToken, setRefreshToken] = useState()
   let [expiresIn, setExpiresIn] = useState()
+
+  const reduxStore = useSelector(store => store)
+  console.log('reduxStore: ', reduxStore);
 
   useEffect(() => {
     API.isCodeTokenInURL() ? logIn(true) : logIn(false)
