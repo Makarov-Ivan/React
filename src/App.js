@@ -6,54 +6,30 @@ import * as API from "./API/api";
 import { Login } from "./components/logIn";
 import { IsLoggedIn } from "./components/isLoggedIn";
 import { LogoComponent } from "./components/logo";
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setTokens, setKey } from './redux/token/actionTypes'
+import { tokenActionCreator } from './redux/token/actionCreater'
 function App() {
-  let [isLogedIn, logIn] = useState(false)
-  let [codeToken, setCodeToken] = useState('')
-  let [accessToken, setAccessToken] = useState()
-  let [refreshToken, setRefreshToken] = useState()
-  let [expiresIn, setExpiresIn] = useState()
-
-  const reduxStore = useSelector(store => store)
-  console.log('reduxStore: ', reduxStore);
+  const initialKey = useSelector(store => store.token.initial_key)
+  const accessToken = useSelector(store => store.token.access_token)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    API.isCodeTokenInURL() ? logIn(true) : logIn(false)
-    setCodeToken(API.defineCodeToken)
+    if (API.isCodeTokenInURL()) {
+      dispatch(tokenActionCreator(setKey, API.defineCodeToken()))
+    }
   }, [])
 
   useEffect(() => {
-    API.requestAccessAndRefreshTokens(codeToken)
-      .then(response => {
-        console.log(response);
-        setAccessToken(response.access_token);
-        setRefreshToken(response.refresh_token);
-        setExpiresIn(response.expires_in)
-      })
-  }, [isLogedIn, codeToken])
-
-  useEffect(() => {
-    if (expiresIn) {
-
-      setInterval(() => {
-        API.refreshAccessAndRefreshTokens(refreshToken).then((response) => {
-          setAccessToken(response.access_token);
-          alert('token updated');
-        })
-      }, Number(expiresIn) * 1000);
+    if (initialKey) {
+      console.log('initialKey: ', initialKey);
+      API.requestAccessAndRefreshTokens(initialKey).then(response => {
+        dispatch(tokenActionCreator(setTokens, response))
+      });
     }
-  }, [expiresIn, refreshToken])
+  }, [initialKey])
 
-  // setInterval(() => {
-  //   API.refreshAccessAndRefreshTokens.then(
-  //     (response) => {
-  //       setAccessToken(response.access_token);
-  //     }
-  //   )
-  // }, expiresIn);
-
-  if (isLogedIn) {
+  if (accessToken) {
     return (
       <React.Fragment>
         <LogoComponent />
