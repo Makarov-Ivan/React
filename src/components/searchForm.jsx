@@ -25,13 +25,13 @@ export const SearchForm = () => {
         `QUERY PARAMETER
         q: ${qeryString},
       type: ${(() => {
-          let string = ''
+          let type = []
           for (let k in types) {
             if (types[k]) {
-              string += k + ' ';
+              type.push(k)
             }
           }
-          return string.split(' ').join(', ');
+          return type;
         })()};
       limit: ${ limit} `)
       TogleForm();
