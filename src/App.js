@@ -21,6 +21,7 @@ function App() {
 
   useEffect(() => {
     if (initialKey) {
+      window.history.replaceState(null, null, 'http://localhost:3000/')
       console.log('initialKey: ', initialKey);
       API.requestAccessAndRefreshTokens(initialKey).then(response => {
         dispatch(tokenActionCreator(setTokens, response))
