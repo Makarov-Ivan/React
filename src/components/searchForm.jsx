@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './SearchForm.scss';
 
 export const SearchForm = () => {
   const [isSubmited, submit] = useState(false)
@@ -8,17 +9,31 @@ export const SearchForm = () => {
   }
 
   const [qeryString, setQeryString] = useState('')
-  const [types, setType] = useState([])
+  const [types, setType] = useState({
+    album: false,
+    artist: false,
+    playlist: false,
+    track: false,
+    show: false,
+    episode: false
+  })
   const [limit, setLimit] = useState(20)
 
   useEffect(() => {
     if (isSubmited) {
-
       alert(
         `QUERY PARAMETER
         q: ${qeryString},
-      type: ${types},
-      limit: ${limit}`)
+      type: ${(() => {
+          let string = ''
+          for (let k in types) {
+            if (types[k]) {
+              string += k + ' ';
+            }
+          }
+          return string.split(' ').join(', ');
+        })()};
+      limit: ${ limit} `)
       TogleForm();
       setQeryString('')
       setType([])
@@ -41,15 +56,10 @@ const SearchField = ({ setQeryString, qeryString }) => {
 
   useEffect(() => {
     if (searchContent) {
-
       console.log('changed')
-
       setQeryString(searchContent.replace(/\s/g, '%20'))
-
     }
   }, [searchContent, setQeryString])
-
-
 
   return (
     <input
@@ -65,18 +75,36 @@ const SearchField = ({ setQeryString, qeryString }) => {
 const ListOfTypeBtns = ({ setType, type }) => {
   return (
     <div className="list">
-      <label htmlFor='album'>album</label>
-      <input type="checkbox" name="type" id="album" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='artist'>artist</label>
-      <input type="checkbox" name="type" id="artist" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='playlist'>playlist</label>
-      <input type="checkbox" name="type" id="playlist" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='track'>track</label>
-      <input type="checkbox" name="type" id="track" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='show'>show</label>
-      <input type="checkbox" name="type" id="show" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='episode'>episode</label>
-      <input type="checkbox" name="type" id="episode" onChange={(e) => setType([...type, e.target.id])} />
+      <label htmlFor='album'>album
+        <input type="checkbox" name="type" id="album" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='artist'>artist
+        <input type="checkbox" name="type" id="artist" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='playlist'>playlist
+        <input type="checkbox" name="type" id="playlist" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='track'>track
+        <input type="checkbox" name="type" id="track" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='show'>show
+        <input type="checkbox" name="type" id="show" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='episode'>episode
+        <input type="checkbox" name="type" id="episode" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
     </div>
   )
 }
