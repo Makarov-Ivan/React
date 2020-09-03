@@ -7,17 +7,17 @@ const tokenInitialState = {
 
 export const tokenReducer = (tokenState = tokenInitialState, action) => {
   switch (action.type) {
-    case 'SET_TOKENS':
+    case 'TOKEN_SET':
       return {
         ...tokenState,
-        access_token: action.access_token,
-        expires_in: action.expires_in,
-        refresh_token: action.expires_in
+        access_token: action.payload.access_token,
+        expires_in: action.payload.expires_in,
+        refresh_token: action.payload.expires_in
       };
-    case 'ERROR':
+    case 'TOKEN_ERROR':
       return {
         ...tokenState,
-        error: action.error
+        error: action.payload.error
       };
 
     default:

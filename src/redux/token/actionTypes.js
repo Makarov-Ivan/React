@@ -1,2 +1,2 @@
-export const setTokens = "SET_TOKENS"
-export const error = 'ERROR'
+export const setTokens = "TOKEN_SET"
+export const error = 'TOKEN_ERROR'
