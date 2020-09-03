@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './SearchForm.scss';
+import * as API from "../API/api";
+import { useSelector } from 'react-redux';
+
 
 export const SearchForm = () => {
   const [isSubmited, submit] = useState(false)
+
+  let querrtParams = '';
+  const accessToken = useSelector(store => store.token.access_token)
 
   const TogleForm = () => {
     submit(!isSubmited)
@@ -21,10 +27,8 @@ export const SearchForm = () => {
 
   useEffect(() => {
     if (isSubmited) {
-      alert(
-        `QUERY PARAMETER
-        q: ${qeryString},
-      type: ${(() => {
+      querrtParams = `?q=${qeryString}&type=${
+        (() => {
           let type = []
           for (let k in types) {
             if (types[k]) {
@@ -32,12 +36,9 @@ export const SearchForm = () => {
             }
           }
           return type;
-        })()};
-      limit: ${ limit} `)
-      TogleForm();
-      setQeryString('')
-      setType([])
-      setLimit(20)
+        })()
+        }&limit=${limit}`
+      API.searchRequest(accessToken, querrtParams).then(console.log);
     }
   }, [TogleForm, isSubmited, limit, qeryString, types])
 

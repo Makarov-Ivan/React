@@ -56,3 +56,18 @@ export const refreshAccessAndRefreshTokens = async (token) => {
     return `ERROR ${response}`
   }
 }
+
+export const searchRequest = async (token, link) => {
+  let response = await fetch(`https://api.spotify.com/v1/search${link}`, {
+    method: 'GET',
+    type: 'no-cors',
+    headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json",
+      "Authorization": ` Bearer ${token}`
+    }
+  });
+  if (response.ok) {
+    return await response.json()
+  }
+}
