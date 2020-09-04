@@ -47,7 +47,12 @@ export const SearchForm = () => {
   const accessToken = useSelector(store => store.token.access_token)
 
   const TogleForm = () => {
-    submit(!isSubmited)
+    if (qeryString) {
+      submit(!isSubmited)
+    }
+    else {
+      alert('fill text input!')
+    }
   }
 
   const dispatch = useDispatch()
@@ -127,6 +132,7 @@ const SearchField = ({ setQeryString, qeryString }) => {
       type="search"
       name="search"
       id="search"
+      required
       value={searchContent}
       onChange={async (e) => { await setSearchContent(e.target.value) }}
     />
