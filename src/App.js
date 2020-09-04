@@ -9,12 +9,13 @@ import { setTokens, setKey } from './redux/token/actionTypes'
 import { tokenActionCreator } from './redux/token/actionCreater'
 import { SearchForm } from "./components/searchForm";
 import { ConnectedListOfAlbumItem } from './components/ListOfAlbumItems'
+import { ConnectedListOfArtistItems } from "./components/listOfArtistItems";
 
 function App() {
   const initialKey = useSelector(store => store.token.initial_key)
   const accessToken = useSelector(store => store.token.access_token)
   const dispatch = useDispatch()
-
+  const store = useSelector(store => store)
   useEffect(() => {
     if (API.isCodeTokenInURL()) {
       dispatch(tokenActionCreator(setKey, API.defineCodeToken()))
@@ -40,7 +41,9 @@ function App() {
             <p>acess token</p>
             {accessToken}
             <SearchForm />
-            <ConnectedListOfAlbumItem />
+            {store.album.data ? (<ConnectedListOfAlbumItem />) : 'use search to get albums'}
+            {store.artist.data ? (<ConnectedListOfArtistItems />) : 'use search to get artist'}
+
           </React.Fragment >
         ) : (
           <React.Fragment>
@@ -48,8 +51,6 @@ function App() {
           </React.Fragment>
         )}
     </React.Fragment>
-
-
   )
 }
 

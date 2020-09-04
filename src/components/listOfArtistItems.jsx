@@ -1,25 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export const ListOfArtistItems = () => {
+const ListOfArtistItems = ({ artists }) => {
   return (
-    <ArtistItem />
+    <React.Fragment>
+      <h2>artist list</h2>
+      {artists.map(el => ArtistItem(el))}
+    </React.Fragment>
   )
 }
 
-const ArtistItem = ({ name, link, genres, image }) => {
+const ArtistItem = ({ name, href, genres, images }) => {
   return (
     <div className="artist">
-      <h2>{name}</h2>
-      <p>{link}</p>
-      <p>{genres.join(' ')}</p>
-      <img src="" alt="" />
+      <a href={href}>
+        <h2>{name}</h2>
+      </a>
+      <p>genres: {genres.join(', ')}</p>
+      <img src={images[0].url} />
     </div>
   )
 }
 ArtistItem.propTypes = {
   name: PropTypes.string,
-  link: PropTypes.string,
+  href: PropTypes.string,
   genres: PropTypes.array,
-  image: PropTypes.array
+  images: PropTypes.array
 };
+
+const mapStateToProps = (store) => ({
+  artists: store.artist.data
+})
+
+export const ConnectedListOfArtistItems = connect(mapStateToProps)(ListOfArtistItems)
