@@ -11,6 +11,7 @@ import { SearchForm } from "./components/searchForm";
 import { ConnectedListOfAlbumItem } from './components/ListOfAlbumItems'
 import { ConnectedListOfArtistItems } from "./components/listOfArtistItems";
 import { ConnectedListOfPlaylistItems } from "./components/listOfPlayListItems";
+import { ConnectedListOfTeackItems } from "./components/listOfTeackItems";
 
 function App() {
   const initialKey = useSelector(store => store.token.initial_key)
@@ -42,10 +43,10 @@ function App() {
             <p>acess token</p>
             {accessToken}
             <SearchForm />
-            {store.album.data ? (<ConnectedListOfAlbumItem />) : 'use search to get albums'}
-            {store.artist.data ? (<ConnectedListOfArtistItems />) : 'use search to get artist'}
-            {store.playlist.data ? (<ConnectedListOfPlaylistItems />) : 'use search to get playlist'}
-
+            {store.album.data ? (<ConnectedListOfAlbumItem />) : 'use search to get albums'} <br />
+            {store.artist.data ? (<ConnectedListOfArtistItems />) : 'use search to get artists'}<br />
+            {store.playlist.data ? (<ConnectedListOfPlaylistItems />) : 'use search to get playlists'}<br />
+            {store.track.data ? (<ConnectedListOfTeackItems />) : 'use search to get traks'}<br />
           </React.Fragment >
         ) : (
           <React.Fragment>

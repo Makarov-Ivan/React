@@ -1,6 +1,6 @@
 const trackInitialState = {
   isLoading: false,
-  data: [],
+  data: null,
   error: '',
 }
 
