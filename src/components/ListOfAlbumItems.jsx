@@ -1,18 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import './ListOfAlbumItems.scss'
 
-export const ListOfAlbumItems = () => {
+const ListOfAlbumItems = ({ albums }) => {
+  return (
+    <React.Fragment>
 
+      <h3>list of albums</h3>
+      <div className='listOfAlbums'>
+        {albums ? albums.map(el => {
+          return (
+            <React.Fragment key={el.uri}>
+
+              {AlbumItem(el)}
+            </React.Fragment>
+          )
+        }) : ''}
+      </div>
+    </React.Fragment>
+  )
 }
-const AlbumItem = ({ name, link, img, date, totalTracks, artist }) => {
+const AlbumItem = ({ name, href, images, release_date, total_tracks, artists }) => {
   return (
     <div className="albumItem">
-      <a href={link}>
-        <p>{name}</p>
-      </a>
-      <p>date: {date}</p>
-      <p>total tracks: {totalTracks}</p>
-      <p>Artists: {artist.join(', ')}</p>
+      <div className="picture">
+        <img src={images[0].url} width='320' height='320' />
+      </div>
+      <div className="name">
+        <a href={href}>
+          <p>{name}</p>
+        </a>
+      </div>
+      <div className="date">
+        <p>date: {release_date}</p>
+      </div>
+      <div className="totalTracks">
+        <p>total tracks: {total_tracks}</p>
+      </div>
+      <div className="artist">
+        <p>Artists: {artists[0].name}</p>
+      </div>
     </div>
   )
 }
@@ -24,4 +52,9 @@ AlbumItem.propTypes = {
   totalTracks: PropTypes.string,
   artist: PropTypes.array,
 }
-// Name , Spotify link, Image (first from Images array), Release date, Total tracks, List of artists (joined by comma)
+
+const mapStateToProps = (store) => ({
+  albums: store.album.data
+})
+
+export const ConnectedListOfAlbumItem = connect(mapStateToProps)(ListOfAlbumItems)

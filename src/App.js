@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setTokens, setKey } from './redux/token/actionTypes'
 import { tokenActionCreator } from './redux/token/actionCreater'
 import { SearchForm } from "./components/searchForm";
+import { ConnectedListOfAlbumItem } from './components/ListOfAlbumItems'
 
 function App() {
   const initialKey = useSelector(store => store.token.initial_key)
@@ -39,6 +40,7 @@ function App() {
             <p>acess token</p>
             {accessToken}
             <SearchForm />
+            <ConnectedListOfAlbumItem />
           </React.Fragment >
         ) : (
           <React.Fragment>
