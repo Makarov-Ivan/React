@@ -43,7 +43,7 @@ import {
 export const SearchForm = () => {
   const [isSubmited, submit] = useState(false)
 
-  let querrtParams = '';
+  // let querrtParams = '';
   const accessToken = useSelector(store => store.token.access_token)
 
   const TogleForm = () => {
@@ -59,19 +59,15 @@ export const SearchForm = () => {
 
   const storeData = (data) => {
     if (data.albums) {
-      console.log('data contains albums');
       dispatch(albumActionCreator(albumGetDataSuccess, data.albums.items))
     }
     if (data.artists) {
-      console.log('data contains artists');
       dispatch(artistActionCreator(artistGetDataSuccess, data.artists.items))
     }
     if (data.playlists) {
-      console.log('data contains playlists');
       dispatch(artistActionCreator(playlistGetDataSuccess, data.playlists.items))
     }
     if (data.tracks) {
-      console.log('data contains tracks');
       dispatch(artistActionCreator(trackGetDataSuccess, data.tracks.items))
     }
   }
@@ -87,23 +83,23 @@ export const SearchForm = () => {
   })
   const [limit, setLimit] = useState(20)
 
+  const convertTypesInArray = () => {
+    let type = []
+    for (let k in types) {
+      if (types[k]) {
+        type.push(k)
+      }
+    }
+    return type;
+  }
+
   useEffect(() => {
     if (isSubmited) {
-      querrtParams = `?q=${qeryString}&type=${
-        (() => {
-          let type = []
-          for (let k in types) {
-            if (types[k]) {
-              type.push(k)
-            }
-          }
-          return type;
-        })()
-        }&limit=${limit}`
+      let querrtParams = `?q=${qeryString}&type=${convertTypesInArray()}&limit=${limit}`
       API.searchRequest(accessToken, querrtParams).then(response => {
-        console.log(response);
         storeData(response)
       });
+      submit(!isSubmited)
     }
   }, [TogleForm, isSubmited, limit, qeryString, types])
 
