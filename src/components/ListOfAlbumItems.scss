@@ -1,0 +1,26 @@
+.listOfAlbums{
+  display:flex;
+  flex-wrap: wrap;
+}
+.albumItem {
+  display: grid;
+  grid-template-columns: 250px 300px;
+  grid-template-rows: auto;
+  gap: 0px 0px;
+  grid-template-areas:
+    "Picture name"
+    "Picture date"
+    "Picture totalTracks"
+    "Picture Artist";
+  border: white solid;
+}
+
+.picture { grid-area: Picture; }
+
+.name { grid-area: name; }
+
+.date { grid-area: date; }
+
+.totalTracks { grid-area: totalTracks; }
+
+.artist { grid-area: Artist; }

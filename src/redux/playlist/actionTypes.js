@@ -1,0 +1,5 @@
+export const playlistSearchStart = 'PLAYLIST_SEARCH_START'
+export const playlistSearchSuccess = 'PLAYLIST_SEARCH_SUCCESS'
+export const playlistSearchFailure = 'PLAYLIST_SEARCH_FAILURE'
+export const playlistGetDataSuccess = 'PLAYLIST_GET_DATA_SUCCESS'
+export const playlistGetDataFailure = 'PLAYLIST_GET_DATA_FAILURE'

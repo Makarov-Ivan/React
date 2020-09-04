@@ -1,0 +1,5 @@
+export const albumSearchStart = 'ALBUM_SEARCH_START'
+export const albumSearchSuccess = 'ALBUM_SEARCH_SUCCESS'
+export const albumSearchFailure = 'ALBUM_SEARCH_FAILURE'
+export const albumGetDataSuccess = 'ALBUM_GET_DATA_SUCCESS'
+export const albumGetDataFailure = 'ALBUM_GET_DATA_FAILURE'

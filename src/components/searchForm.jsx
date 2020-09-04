@@ -1,28 +1,105 @@
 import React, { useState, useEffect } from 'react';
+import './SearchForm.scss';
+import * as API from "../API/api";
+import { useSelector, useDispatch } from 'react-redux';
+
+import { albumActionCreator } from "../redux/album/actionCreater";
+import {
+  albumSearchStart,
+  albumSearchSuccess,
+  albumSearchFailure,
+  albumGetDataSuccess,
+  albumGetDataFailure,
+} from "../redux/album/actionTypes";
+
+import { artistActionCreator } from '../redux/artist/actionCreater'
+import {
+  artistSearchStart,
+  artistSearchSuccess,
+  artistSearchFailure,
+  artistGetDataSuccess,
+  artistGetDataFailure,
+} from "../redux/artist/actionTypes";
+
+import { playlistActionCreator } from '../redux/playlist/actionCreater'
+import {
+  playlistSearchStart,
+  playlistSearchSuccess,
+  playlistSearchFailure,
+  playlistGetDataSuccess,
+  playlistGetDataFailure,
+} from "../redux/playlist/actionTypes";
+
+import { trackActionCreator } from '../redux/track/actionCreater'
+import {
+  trackSearchStart,
+  trackSearchSuccess,
+  trackSearchFailure,
+  trackGetDataSuccess,
+  trackGetDataFailure,
+} from "../redux/track/actionTypes";
+
 
 export const SearchForm = () => {
   const [isSubmited, submit] = useState(false)
 
+  // let querrtParams = '';
+  const accessToken = useSelector(store => store.token.access_token)
+
   const TogleForm = () => {
-    submit(!isSubmited)
+    if (qeryString) {
+      submit(!isSubmited)
+    }
+    else {
+      alert('fill text input!')
+    }
+  }
+
+  const dispatch = useDispatch()
+
+  const storeData = (data) => {
+    if (data.albums) {
+      dispatch(albumActionCreator(albumGetDataSuccess, data.albums.items))
+    }
+    if (data.artists) {
+      dispatch(artistActionCreator(artistGetDataSuccess, data.artists.items))
+    }
+    if (data.playlists) {
+      dispatch(artistActionCreator(playlistGetDataSuccess, data.playlists.items))
+    }
+    if (data.tracks) {
+      dispatch(artistActionCreator(trackGetDataSuccess, data.tracks.items))
+    }
   }
 
   const [qeryString, setQeryString] = useState('')
-  const [types, setType] = useState([])
+  const [types, setType] = useState({
+    album: false,
+    artist: false,
+    playlist: false,
+    track: false,
+    show: false,
+    episode: false
+  })
   const [limit, setLimit] = useState(20)
+
+  const convertTypesInArray = () => {
+    let type = []
+    for (let k in types) {
+      if (types[k]) {
+        type.push(k)
+      }
+    }
+    return type;
+  }
 
   useEffect(() => {
     if (isSubmited) {
-
-      alert(
-        `QUERY PARAMETER
-        q: ${qeryString},
-      type: ${types},
-      limit: ${limit}`)
-      TogleForm();
-      setQeryString('')
-      setType([])
-      setLimit(20)
+      let querrtParams = `?q=${qeryString}&type=${convertTypesInArray()}&limit=${limit}`
+      API.searchRequest(accessToken, querrtParams).then(response => {
+        storeData(response)
+      });
+      submit(!isSubmited)
     }
   }, [TogleForm, isSubmited, limit, qeryString, types])
 
@@ -41,21 +118,17 @@ const SearchField = ({ setQeryString, qeryString }) => {
 
   useEffect(() => {
     if (searchContent) {
-
       console.log('changed')
-
       setQeryString(searchContent.replace(/\s/g, '%20'))
-
     }
   }, [searchContent, setQeryString])
-
-
 
   return (
     <input
       type="search"
       name="search"
       id="search"
+      required
       value={searchContent}
       onChange={async (e) => { await setSearchContent(e.target.value) }}
     />
@@ -65,18 +138,36 @@ const SearchField = ({ setQeryString, qeryString }) => {
 const ListOfTypeBtns = ({ setType, type }) => {
   return (
     <div className="list">
-      <label htmlFor='album'>album</label>
-      <input type="checkbox" name="type" id="album" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='artist'>artist</label>
-      <input type="checkbox" name="type" id="artist" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='playlist'>playlist</label>
-      <input type="checkbox" name="type" id="playlist" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='track'>track</label>
-      <input type="checkbox" name="type" id="track" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='show'>show</label>
-      <input type="checkbox" name="type" id="show" onChange={(e) => setType([...type, e.target.id])} />
-      <label htmlFor='episode'>episode</label>
-      <input type="checkbox" name="type" id="episode" onChange={(e) => setType([...type, e.target.id])} />
+      <label htmlFor='album'>album
+        <input type="checkbox" name="type" id="album" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='artist'>artist
+        <input type="checkbox" name="type" id="artist" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='playlist'>playlist
+        <input type="checkbox" name="type" id="playlist" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='track'>track
+        <input type="checkbox" name="type" id="track" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      {/* <label htmlFor='show'>show
+        <input type="checkbox" name="type" id="show" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label>
+      <label htmlFor='episode'>episode
+        <input type="checkbox" name="type" id="episode" onChange={async (e) => {
+          await setType({ ...type, [e.target.id]: !type[e.target.id] })
+        }} />
+      </label> */}
     </div>
   )
 }
@@ -96,3 +187,5 @@ const SearchButton = ({ TogleForm }) => {
     <input type="button" value="Search" onClick={TogleForm} />
   )
 }
+
+
