@@ -46,11 +46,11 @@ const AlbumItem = ({ name, href, images, release_date, total_tracks, artists }) 
 }
 AlbumItem.propTypes = {
   name: PropTypes.string,
-  link: PropTypes.string,
-  img: PropTypes.array,
-  date: PropTypes.string,
-  totalTracks: PropTypes.string,
-  artist: PropTypes.array,
+  href: PropTypes.string,
+  images: PropTypes.array,
+  release_date: PropTypes.string,
+  total_tracks: PropTypes.string,
+  artists: PropTypes.array,
 }
 
 const mapStateToProps = (store) => ({
