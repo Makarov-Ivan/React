@@ -1,32 +1,32 @@
 const artistInitialState = {
   isLoading: false,
-  data: [],
+  data: null,
   error: '',
 }
 
 export const artistReducer = (artistState = artistInitialState, action) => {
   switch (action.type) {
-    case 'SEARCH_START':
+    case 'ARTIST_SEARCH_START':
       return {
         ...artistState,
         isLoading: true
       };
-    case 'SEARCH_SUCCESS':
+    case 'ARTIST_SEARCH_SUCCESS':
       return {
         ...artistState,
         isLoading: false
       };
-    case 'SEARCH_FAILURE':
+    case 'ARTIST_SEARCH_FAILURE':
       return {
         ...artistState,
         error: action.payload
       };
-    case 'GET_DATA_SUCCESS':
+    case 'ARTIST_GET_DATA_SUCCESS':
       return {
         ...artistState,
-        data: artistState.data.push(action.payload)
+        data: action.payload
       };
-    case 'GET_DATA_FAILURE':
+    case 'ARTIST_GET_DATA_FAILURE':
       return {
         ...artistState,
         error: action.payload

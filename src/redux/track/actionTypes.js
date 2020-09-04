@@ -1,0 +1,5 @@
+export const trackSearchStart = 'TRACK_SEARCH_START'
+export const trackSearchSuccess = 'TRACK_SEARCH_SUCCESS'
+export const trackSearchFailure = 'TRACK_SEARCH_FAILURE'
+export const trackGetDataSuccess = 'TRACK_GET_DATA_SUCCESS'
+export const trackGetDataFailure = 'TRACK_GET_DATA_FAILURE'

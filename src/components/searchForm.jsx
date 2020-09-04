@@ -1,7 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import './SearchForm.scss';
 import * as API from "../API/api";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { albumActionCreator } from "../redux/album/actionCreater";
+import {
+  albumSearchStart,
+  albumSearchSuccess,
+  albumSearchFailure,
+  albumGetDataSuccess,
+  albumGetDataFailure,
+} from "../redux/album/actionTypes";
+
+import { artistActionCreator } from '../redux/artist/actionCreater'
+import {
+  artistSearchStart,
+  artistSearchSuccess,
+  artistSearchFailure,
+  artistGetDataSuccess,
+  artistGetDataFailure,
+} from "../redux/artist/actionTypes";
+
+import { playlistActionCreator } from '../redux/playlist/actionCreater'
+import {
+  playlistSearchStart,
+  playlistSearchSuccess,
+  playlistSearchFailure,
+  playlistGetDataSuccess,
+  playlistGetDataFailure,
+} from "../redux/playlist/actionTypes";
+
+import { trackActionCreator } from '../redux/track/actionCreater'
+import {
+  trackSearchStart,
+  trackSearchSuccess,
+  trackSearchFailure,
+  trackGetDataSuccess,
+  trackGetDataFailure,
+} from "../redux/track/actionTypes";
 
 
 export const SearchForm = () => {
@@ -12,6 +48,27 @@ export const SearchForm = () => {
 
   const TogleForm = () => {
     submit(!isSubmited)
+  }
+
+  const dispatch = useDispatch()
+
+  const storeData = (data) => {
+    if (data.albums) {
+      console.log('data contains albums');
+      dispatch(albumActionCreator(albumGetDataSuccess, data.albums.items))
+    }
+    if (data.artists) {
+      console.log('data contains artists');
+      dispatch(artistActionCreator(artistGetDataSuccess, data.artists.items))
+    }
+    if (data.playlists) {
+      console.log('data contains playlists');
+      dispatch(artistActionCreator(playlistGetDataSuccess, data.playlists.items))
+    }
+    if (data.tracks) {
+      console.log('data contains tracks');
+      dispatch(artistActionCreator(trackGetDataSuccess, data.tracks.items))
+    }
   }
 
   const [qeryString, setQeryString] = useState('')
@@ -38,7 +95,10 @@ export const SearchForm = () => {
           return type;
         })()
         }&limit=${limit}`
-      API.searchRequest(accessToken, querrtParams).then(console.log);
+      API.searchRequest(accessToken, querrtParams).then(response => {
+        console.log(response);
+        storeData(response)
+      });
     }
   }, [TogleForm, isSubmited, limit, qeryString, types])
 
@@ -96,7 +156,7 @@ const ListOfTypeBtns = ({ setType, type }) => {
           await setType({ ...type, [e.target.id]: !type[e.target.id] })
         }} />
       </label>
-      <label htmlFor='show'>show
+      {/* <label htmlFor='show'>show
         <input type="checkbox" name="type" id="show" onChange={async (e) => {
           await setType({ ...type, [e.target.id]: !type[e.target.id] })
         }} />
@@ -105,7 +165,7 @@ const ListOfTypeBtns = ({ setType, type }) => {
         <input type="checkbox" name="type" id="episode" onChange={async (e) => {
           await setType({ ...type, [e.target.id]: !type[e.target.id] })
         }} />
-      </label>
+      </label> */}
     </div>
   )
 }
@@ -125,3 +185,5 @@ const SearchButton = ({ TogleForm }) => {
     <input type="button" value="Search" onClick={TogleForm} />
   )
 }
+
+
