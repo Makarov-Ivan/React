@@ -1,26 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export const ListOfPlaylistItems = () => {
-
+const ListOfPlaylistItems = ({ playlists }) => {
+  return (
+    playlists.map(el => PlaylistItem(el))
+  )
 }
-const PlaylistItem = ({ name, link, img, ownerName, trackCout }) => {
+const PlaylistItem = ({ name, href, images, owner, tracks }) => {
   return (
     <div className="playlistItem">
-      <a href={link}>
+      <a href={href}>
         <p>{name}</p>
       </a>
-      <img src="" alt="" />
-      <p>Owner: {ownerName}</p>
-      <p>Count: {trackCout}</p>
+      <images src={images[0].url} />
+      <p>Owner: {owner.display_name}</p>
+      <p>Count: {tracks.total}</p>
     </div>
   )
 }
 PlaylistItem.propTypes = {
   name: PropTypes.string,
-  link: PropTypes.string,
-  img: PropTypes.array,
-  ownerName: PropTypes.string,
-  trackCout: PropTypes.string,
+  href: PropTypes.string,
+  images: PropTypes.array,
+  owner: PropTypes.object,
+  tracks: PropTypes.object,
 }
-// Name, Spotify lin, Image (first from Images array, Owner nam, Tracks count
+
+const mapStateToProps = (store) => ({
+  playlists: store.playlist.data
+})
+
+export const ConnectedListOfPlaylistItems = connect(mapStateToProps)(ListOfPlaylistItems)

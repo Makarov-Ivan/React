@@ -10,6 +10,7 @@ import { tokenActionCreator } from './redux/token/actionCreater'
 import { SearchForm } from "./components/searchForm";
 import { ConnectedListOfAlbumItem } from './components/ListOfAlbumItems'
 import { ConnectedListOfArtistItems } from "./components/listOfArtistItems";
+import { ConnectedListOfPlaylistItems } from "./components/listOfPlayListItems";
 
 function App() {
   const initialKey = useSelector(store => store.token.initial_key)
@@ -43,6 +44,7 @@ function App() {
             <SearchForm />
             {store.album.data ? (<ConnectedListOfAlbumItem />) : 'use search to get albums'}
             {store.artist.data ? (<ConnectedListOfArtistItems />) : 'use search to get artist'}
+            {store.playlist.data ? (<ConnectedListOfPlaylistItems />) : 'use search to get playlist'}
 
           </React.Fragment >
         ) : (
